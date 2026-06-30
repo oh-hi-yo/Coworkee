@@ -70,6 +70,22 @@ Office / Organization / History follow the SAME path: inventory the module → m
 screen → parity tests. Append new `BR-xx` rows and any new mappings/decisions to the
 reference files as you go.
 
+## Working conventions (user-mandated)
+
+These are standing rules for this project — follow them every phase:
+
+1. **Verify with screenshots, and retain them.** Beyond the G1/G2/G3 gates, drive the
+   *running* app with Playwright and capture screenshots (`coworkee-web/scripts/
+   screenshots.mjs`, `screenshots-phase4.mjs`) into `migration/screenshots/`. Commit the
+   PNGs with the phase and state what each verifies. Test logs alone are not enough.
+2. **Repos live under `Coworkee/`.** `coworkee-api` and `coworkee-web` are committed inside
+   the Coworkee repo and pushed to its GitHub remote (branch
+   `feature/migrate-extjs-practice`) — one commit per phase. Do not give them separate git
+   remotes.
+3. **Keep it runnable locally.** Maintain `migration/run-local.sh` / `stop-local.sh` and
+   `migration/RUNBOOK.md` so the user can start the whole stack from their own VS Code Git
+   Bash terminal (`bash migration/run-local.sh`).
+
 ## Update protocol (keep this skill alive)
 
 When you complete a unit of work, update the matching reference file in the SAME commit:
