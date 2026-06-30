@@ -1,0 +1,12 @@
+{
+  "name": "coworkee-api-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright API e2e tests for coworkee-api (Phase 2 G3)",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1"
+  }
+}

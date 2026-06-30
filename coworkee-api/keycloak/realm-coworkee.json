@@ -1,0 +1,58 @@
+{
+  "realm": "coworkee",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "roles": {
+    "realm": [
+      { "name": "coworkee-admin", "description": "Can create/edit people" },
+      { "name": "coworkee-viewer", "description": "Read-only directory access" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "coworkee-web",
+      "name": "Coworkee Web",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "secret": "coworkee-web-secret",
+      "redirectUris": ["http://localhost:3000/*"],
+      "webOrigins": ["http://localhost:3000"],
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "fullScopeAllowed": true,
+      "attributes": {
+        "post.logout.redirect.uris": "http://localhost:3000/*"
+      }
+    }
+  ],
+  "users": [
+    {
+      "username": "admin",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "admin@coworkee.test",
+      "firstName": "Admin",
+      "lastName": "User",
+      "credentials": [
+        { "type": "password", "value": "admin", "temporary": false }
+      ],
+      "realmRoles": ["coworkee-admin"]
+    },
+    {
+      "username": "viewer",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "viewer@coworkee.test",
+      "firstName": "Viewer",
+      "lastName": "User",
+      "credentials": [
+        { "type": "password", "value": "viewer", "temporary": false }
+      ],
+      "realmRoles": ["coworkee-viewer"]
+    }
+  ]
+}
