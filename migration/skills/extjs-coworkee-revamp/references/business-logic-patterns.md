@@ -50,3 +50,30 @@ Port: `domain/person/contact.ts`; buttons call these. Test edge cases (empty pho
 ## P10 — field/validation overrides → Zod + AntD form rules (BR-18, BR-19/20 N/A)
 Required set (BR-18) → Zod schema. Password rules (BR-19/20) are N/A under Keycloak
 (ADR-004). `requiredMessage` "This field is required" preserved as default message.
+
+## P11 — list grouping (lastname[0]) → pure fn + injected header rows (BR-10)
+`domain/person/grouping.ts` `groupByLastInitial` returns ordered `{letter, items}` from
+the lastname-sorted backend result; the list page injects synthetic group-header rows into
+the AntD Table (first cell `colSpan=COLS`, others `colSpan:0`).
+
+## BR coverage matrix (no orphan rules)
+
+| BR | Rule | Covered by |
+|---|---|---|
+| BR-01 | personPath | web `derive.test.ts`; backend `url` field |
+| BR-02 | fullName | web `derive.test.ts`; backend `PersonApiIntegrationTest` |
+| BR-03 | dates no TZ | web `date.test.ts` (parseLocalDate), Zod `isoDate`; e2e detail format |
+| BR-04 | id∨username∨email | backend `PersonApiIntegrationTest` + API e2e; web `getPerson` |
+| BR-05~08 | contact URIs | web `contact.test.ts`; detail page buttons |
+| BR-09 | paging/sort(lastname) | backend integration + API e2e; pilot e2e list |
+| BR-10 | A-Z grouping | web `grouping.test.ts`; pilot e2e list groups |
+| BR-11 | distinct filters | backend integration (filters) + list UI; pilot e2e |
+| BR-12 | filters in URL | list page searchParams sync; pilot e2e search |
+| BR-13 | debounce 500ms | list page; pilot e2e search |
+| BR-14 | history + coworkers | detail page dependent queries; pilot e2e detail |
+| BR-15 | dateDiff | web `dateDiff.test.ts` (exhaustive, incl. leap-day); e2e detail age/tenure |
+| BR-16 | actionIcon | web `actionIcon.test.ts` |
+| BR-17 | conditional + F jS,Y | web `date.test.ts`; detail page; e2e detail |
+| BR-18 | required validation | backend integration (400); web `personForm` schema; pilot e2e wizard |
+| BR-19/20 | password rules | **N/A** (ADR-004 — Person has no password) |
+| BR-21 | generateUsername | backend `UsernameGeneratorTest` + integration + API e2e; pilot e2e (auto + manual-wins) |

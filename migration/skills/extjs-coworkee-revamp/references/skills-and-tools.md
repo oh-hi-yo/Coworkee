@@ -57,9 +57,24 @@ as phases complete.
   date parity + api unwrap) · G3 1 Playwright UI smoke green (unauthenticated → Keycloak).
 - New decisions: ADR-013 (AntD 6), ADR-014 (Zod 4 + next-auth v5), ADR-015 (Next 16 Proxy).
 
-## Phase 4 — Pilot screens + parity (PENDING)
-- Planned tools: Vitest + RTL + MSW (component/parity), Playwright (e2e critical paths).
-- Each BR-xx → at least one before/after test.
+## Phase 4 — Pilot screens + parity (DONE ✅)
+- **Tools used**: `Write`/`Edit` for AntD screens; Vitest for the grouping pure fn;
+  `@playwright/test` (real Chromium) for the critical journeys; `scripts/screenshots*.mjs`
+  for verification captures.
+- **Delivered**: enriched list (`app/people/page.tsx`) — A-Z grouping (BR-10), debounced
+  search (BR-13), office/organization filters (BR-11), URL-synced filters (BR-12), default
+  lastname sort (BR-09), admin "Add employee"; detail (`app/people/[key]/page.tsx`) —
+  conditional fields + `F jS, Y` + age/tenure via `dateDiff` (BR-15/17), contact buttons
+  (BR-05~08), History + Coworkers dependent queries (BR-14); create/edit Wizard
+  (`components/PersonWizard.tsx` + `new`/`[key]/edit`) — Steps + RHF + Zod (BR-18), username
+  auto-gen with manual-edit-wins (BR-21), no password (ADR-004); role-gated writes (ADR-005).
+- **Tests**: Vitest grouping (BR-10); Playwright e2e — list grouping/search, detail
+  parity, wizard auto-username + manual-edit, full create→edit→list, viewer 403/hidden.
+  Component-level UI BRs are covered by real-browser Playwright (rather than RTL+MSW) to
+  avoid AntD 6 + jsdom friction — see the BR coverage matrix in business-logic-patterns.md.
+- **Gates**: G1 `next build` OK (routes /people, /people/[key], /edit, /new) · G2 43 Vitest
+  green · G3 7 Playwright e2e green. Screenshots 03-07 in `migration/screenshots/`.
+- BR matrix has no orphans (BR-19/20 N/A by ADR-004).
 
 ## Phase 5 — Keycloak + docker-compose (DONE ✅ — infra front-loaded in Phase 2)
 - **Tools used**: `docker compose` (postgres:16 + keycloak:26), Keycloak realm export JSON,
