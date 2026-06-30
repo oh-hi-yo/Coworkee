@@ -40,11 +40,22 @@ as phases complete.
 - New decisions: ADR-010 (Boot 3.5.16), ADR-011 (deterministic seed generator),
   ADR-012 (front-loaded Keycloak for the Phase 2 e2e).
 
-## Phase 3 — Frontend skeleton + auth (PENDING)
-- Planned tools: `bash` (npm/pnpm, `create-next-app`), `Write`/`Edit`.
-- Libraries: Ant Design 5, TanStack Query, React Hook Form, Zod, NextAuth v5.
-- Output: `coworkee-web` skeleton, `src/domain/**` pure fns (+ Vitest), `src/api/**`
-  anti-corruption layer, NextAuth OIDC wiring.
+## Phase 3 — Frontend skeleton + auth (DONE ✅)
+- **Tools used**: `create-next-app@latest` (Next 16.2.9 / React 19, App Router, src dir);
+  `Write`/`Edit`; Vitest + jsdom for domain/api unit tests; `next build` (G1);
+  `@playwright/test` + Chromium for the UI smoke (G3). Read the bundled Next 16 docs
+  (`node_modules/next/dist/docs`) for breaking changes (Proxy, async searchParams).
+- **Delivered** (`C:\workspace\Coworkee\coworkee-web`): `src/domain/**` pure functions —
+  `format/dateDiff.ts` (BR-15, Ext.Date.diff/add/plural replicated exactly, incl. leap-day
+  fidelity), `format/actionIcon.ts` (BR-16), `format/date.ts` (BR-03/17 parse + `F jS, Y`),
+  `person/derive.ts` (BR-01/02), `person/contact.ts` (BR-05~08); `src/api/**`
+  anti-corruption layer (Zod schemas, `apiFetch` envelope-unwrap + error mapping, typed
+  people/offices/organizations/actions modules); NextAuth v5 OIDC (`src/auth.ts`),
+  route protection (`src/proxy.ts`), Providers (AntD registry + TanStack Query + session),
+  login auto-redirect, a basic people list page (enriched in Phase 4).
+- **Gates**: G1 `next build` OK · G2 41 Vitest green (dateDiff/derive/contact/actionIcon/
+  date parity + api unwrap) · G3 1 Playwright UI smoke green (unauthenticated → Keycloak).
+- New decisions: ADR-013 (AntD 6), ADR-014 (Zod 4 + next-auth v5), ADR-015 (Next 16 Proxy).
 
 ## Phase 4 — Pilot screens + parity (PENDING)
 - Planned tools: Vitest + RTL + MSW (component/parity), Playwright (e2e critical paths).

@@ -77,6 +77,27 @@ though Phase 5 "owns" the compose file. We created `docker-compose.yml` +
 browser login flow. JUnit tests stay Keycloak-free: a stub `JwtDecoder` bean disables
 issuer auto-config and `SecurityMockMvcRequestPostProcessors.jwt()` injects roles.
 
+## ADR-013 — Ant Design 6 (not 5)
+The plan named Ant Design 5; npm resolves AntD **6.x** as latest, which natively targets
+React 19 + Next 16 (AntD 5 needs `@ant-design/v5-patch-for-react-19` and still has edge
+cases). We use AntD 6. The component mapping is unchanged — Table / Descriptions / Card /
+Form / Select / Steps / Spin / Modal / App all exist in v6.
+**Why:** smoothest React 19/Next 16 integration; avoids the v5 patch shim.
+
+## ADR-014 — Zod 4 + next-auth v5 (beta)
+Latest majors: Zod **4.x** (schemas use the v4 API), `next-auth@5` (Auth.js v5) for OIDC.
+The access token + Keycloak realm roles are threaded into the NextAuth session
+(`session.accessToken`, `session.roles`) so the API anti-corruption layer authorizes and
+the UI shows/hides writes by role.
+
+## ADR-015 — Next.js 16 Proxy replaces Middleware
+Next 16 renames the middleware file convention to **`proxy.ts`** (`src/proxy.ts`) and
+makes `searchParams`/`cookies()`/`headers()` async. Route protection lives in
+`src/proxy.ts` using the NextAuth `auth()` wrapper; unauthenticated users are sent to
+`/login`, which immediately calls `signIn('keycloak')` to reach the Keycloak login page.
+**Why:** follow the framework's current conventions (the project's bundled Next docs warn
+to heed deprecations).
+
 ## Open / revisit later
 - Mobile (phone/tablet) profiles are out of scope for pilot; revisit if needed.
 - `actions/events` history model: included read-only in detail; full CRUD later.
