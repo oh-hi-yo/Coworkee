@@ -61,9 +61,19 @@ as phases complete.
 - Planned tools: Vitest + RTL + MSW (component/parity), Playwright (e2e critical paths).
 - Each BR-xx → at least one before/after test.
 
-## Phase 5 — Keycloak + docker-compose (PENDING)
-- Planned tools: `bash` (docker compose), Keycloak realm export JSON.
-- Output: one compose file (Keycloak + Postgres), realm/client/users, end-to-end auth.
+## Phase 5 — Keycloak + docker-compose (DONE ✅ — infra front-loaded in Phase 2)
+- **Tools used**: `docker compose` (postgres:16 + keycloak:26), Keycloak realm export JSON,
+  `@playwright/test` for the full browser login flow, `node scripts/screenshots.mjs`
+  (Chromium) for verification screenshots.
+- **Delivered**: `coworkee-api/docker-compose.yml`, `coworkee-api/keycloak/realm-coworkee.json`
+  (client `coworkee-web` confidential + direct-access-grant, roles `coworkee-admin`/
+  `coworkee-viewer`, seed users `admin`/`viewer`); backend `issuer-uri` + role converter;
+  frontend NextAuth Keycloak provider + `.env`.
+- **Gates**: G1/G2 unchanged (no regression). G3 full login e2e green
+  (`coworkee-web/e2e/login.spec.ts`): admin logs in via Keycloak → directory list renders
+  real backend data. Screenshots in `migration/screenshots/` (01 login page, 02 list).
+- **Remaining for Phase 4**: role-gated write UI (admin sees Add/Edit; viewer hidden +
+  backend 403) — covered with the pilot screens.
 
 ## Document-format skills (use only when producing those deliverables)
 - `docx` / `pptx` / `xlsx` / `pdf` — not needed for code, but available if the user
