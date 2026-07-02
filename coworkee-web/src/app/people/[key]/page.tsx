@@ -14,8 +14,8 @@ import {
   Button,
   Card,
   Descriptions,
+  Empty,
   Layout,
-  List,
   Space,
   Spin,
   Tag,
@@ -154,39 +154,37 @@ export default function PersonDetailPage() {
 
         <Space align="start" size={16} style={{ display: 'flex', flexWrap: 'wrap' }}>
           <Card title={`History (${actions.length})`} style={{ flex: '1 1 380px' }}>
-            <List
-              size="small"
-              dataSource={actions}
-              locale={{ emptyText: 'No activity' }}
-              renderItem={(a) => (
-                <List.Item>
-                  <Space>
+            {actions.length === 0 ? (
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No activity" />
+            ) : (
+              <Space orientation="vertical" size={10} style={{ width: '100%' }}>
+                {actions.map((a) => (
+                  <Space key={a.id}>
                     <Tag>{a.type}</Tag>
                     <span>{a.subject}</span>
                     <Typography.Text type="secondary">{a.created.slice(0, 10)}</Typography.Text>
                   </Space>
-                </List.Item>
-              )}
-            />
+                ))}
+              </Space>
+            )}
           </Card>
 
           <Card title={`Coworkers (${coworkers.length})`} style={{ flex: '1 1 380px' }}>
-            <List
-              size="small"
-              dataSource={coworkers}
-              locale={{ emptyText: 'No coworkers' }}
-              renderItem={(c) => (
-                <List.Item>
-                  <Space>
+            {coworkers.length === 0 ? (
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No coworkers" />
+            ) : (
+              <Space orientation="vertical" size={10} style={{ width: '100%' }}>
+                {coworkers.map((c) => (
+                  <Space key={c.id}>
                     <Avatar src={c.picture ?? undefined} size="small">
                       {c.firstname[0]}
                     </Avatar>
                     <Link href={`/people/${c.id}`}>{c.fullname}</Link>
                     <Typography.Text type="secondary">{c.title}</Typography.Text>
                   </Space>
-                </List.Item>
-              )}
-            />
+                ))}
+              </Space>
+            )}
           </Card>
         </Space>
       </Layout.Content>

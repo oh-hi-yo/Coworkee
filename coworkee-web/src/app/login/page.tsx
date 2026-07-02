@@ -1,6 +1,6 @@
 'use client';
 
-import { Spin } from 'antd';
+import { Spin, Typography } from 'antd';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect } from 'react';
@@ -15,10 +15,16 @@ function LoginRedirect() {
   }, [callbackUrl]);
 
   return (
-    <div style={{ display: 'grid', placeItems: 'center', minHeight: '100vh' }}>
-      <Spin size="large" tip="Redirecting to sign in…">
-        <div style={{ padding: 24 }} />
-      </Spin>
+    <div
+      style={{
+        display: 'grid',
+        placeItems: 'center',
+        minHeight: '100vh',
+        gap: 16,
+      }}
+    >
+      <Spin size="large" />
+      <Typography.Text type="secondary">Redirecting to sign in…</Typography.Text>
     </div>
   );
 }
