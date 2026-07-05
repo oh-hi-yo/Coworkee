@@ -49,3 +49,22 @@ Consult this before writing any component. Append rows as new constructs appear.
 | `data.reset()` seed + hourly cron | Flyway `V2__seed.sql` | from the 3 JSON files (Q4) |
 | `generateUsername` | service method / REST endpoint | latinize+dedupe (BR-21) |
 | `Person.lookup(id|username|email)` | repository query on 3 columns | BR-04 |
+
+## Ant Design 6 notes (we are on antd 6.5, not 5)
+
+Deprecations we hit — prefer the replacements from the start on new screens:
+
+| Deprecated (antd 6) | Use instead | Notes |
+|---|---|---|
+| `<List>` / `<List.Item>` | `<Space orientation="vertical">` + map, `<Empty>` for empty state | List will be removed next major |
+| `<Space direction="vertical">` | `<Space orientation="vertical">` | `direction` → `orientation` |
+| `<Spin tip="…">` | `<Spin/>` + separate `<Typography.Text>` (or `description`) | `tip` deprecated |
+
+- These warnings fire in **dev** (`npm run dev`, which `run-local.sh` uses); verify a clean
+  console with a Playwright `page.on('console')` check across every route (login, list,
+  detail, new, edit) — that check is part of the screenshot-verification step.
+- Grouped `Table` (BR-10): antd has no native group rows — inject synthetic header rows and
+  use the first column's `onCell` `colSpan=COLS` (others `colSpan:0`).
+- `Form.Item` label is NOT auto-linked to a custom-controlled `Input`; for e2e, target the
+  field by `placeholder` (set `placeholder={label}`), and select the form's submit button
+  via `button[type=submit]` (antd's accessible-name matching for `getByRole` is unreliable).

@@ -2,9 +2,10 @@
 name: extjs-coworkee-revamp
 description: >
   Playbook + living record for revamping the ExtJS "Coworkee" employee-directory app
-  to a modern full stack: Next.js 16 + React 19 + Ant Design 5 + TanStack Query +
-  React Hook Form/Zod + NextAuth (frontend), and Spring Boot 3 + JDK 17 + PostgreSQL +
-  Spring Security Resource Server (backend), with Keycloak (OIDC) for auth. Use this
+  to a modern full stack: Next.js 16 + React 19 + Ant Design 6 + TanStack Query 5 +
+  React Hook Form 7/Zod 4 + NextAuth v5 (frontend), and Spring Boot 3.5 + JDK 17 +
+  PostgreSQL + Flyway + Spring Security Resource Server (backend), with Keycloak (OIDC)
+  for auth. The pilot (people list + detail + create/edit Wizard) is COMPLETE. Use this
   skill when continuing/extending this migration, when porting another ExtJS screen
   (office, organization, history) using the same patterns, or when you need the
   ExtJS→React/Spring component mapping, the architectural decisions, or which tools/
@@ -22,19 +23,37 @@ same path.
 
 | Layer | Tech |
 |---|---|
-| Frontend | Next.js 16 (App Router) + React 19 + Ant Design 5 |
+| Frontend | Next.js 16.2 (App Router) + React 19.2 + Ant Design 6.5 |
 | Server state | TanStack Query 5 |
-| Forms | React Hook Form 7 + Zod |
+| Forms | React Hook Form 7 + Zod 4 (`@hookform/resolvers`) |
 | Auth (frontend) | NextAuth / Auth.js v5 (OIDC → Keycloak) |
-| Backend | Spring Boot 3, JDK 17, REST |
-| Persistence | PostgreSQL + Flyway + Spring Data JPA |
+| Backend | Spring Boot 3.5.16, JDK 17, REST |
+| Persistence | PostgreSQL 16 + Flyway + Spring Data JPA |
 | Auth (backend) | Spring Security OAuth2 Resource Server (JWT from Keycloak) |
-| Auth server | Keycloak (docker-compose) |
-| Tests | Vitest + RTL + MSW (web), JUnit + Testcontainers (api), Playwright (e2e) |
+| Auth server | Keycloak 26 (docker-compose) |
+| Tests | Vitest (web unit), JUnit + Testcontainers (api), Playwright (e2e, both) |
 
-- Source app (read-only reference): `Coworkee/` (this repo)
-- Target frontend repo: `coworkee-web`
-- Target backend repo: `coworkee-api`
+- Source app (read-only reference): `Coworkee/client` + `Coworkee/server`
+- Target backend: `Coworkee/coworkee-api` · Target frontend: `Coworkee/coworkee-web`
+  (both live inside the Coworkee repo — see conventions below)
+
+## Status — Pilot COMPLETE ✅
+
+Delivered end-to-end and verified (G1 build + G2 unit + G3 Playwright, per phase):
+
+| Phase | What | Where |
+|---|---|---|
+| 2 Backend | Spring Boot REST + JPA + Flyway seed + Keycloak Resource Server | `coworkee-api/` |
+| 3 Frontend | Next.js + AntD + TanStack + NextAuth; `domain/` pure fns; `api/` ACL | `coworkee-web/` |
+| 5 Auth | docker-compose (Postgres+Keycloak) + realm; full OIDC login e2e | `coworkee-api/docker-compose.yml`, `keycloak/` |
+| 4 Pilot | people **list** (group/filter/search) + **detail** (age/tenure/history/coworkers) + create/edit **Wizard** | `coworkee-web/src/app/people/**` |
+
+- All 21 business rules (BR-01~21) covered by a test; BR-19/20 N/A (ADR-004, no password).
+  Coverage matrix in `references/business-logic-patterns.md`.
+- Runs locally: `bash migration/run-local.sh` (see `migration/RUNBOOK.md`). Demo users
+  `admin/admin` (write) and `viewer/viewer` (read-only).
+- Verification screenshots retained in `migration/screenshots/` (01 login → 09 clean detail).
+- **Next**: office / organization / history slices — repeat the workflow below.
 
 ## The workflow (do not skip phases)
 
